@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/enemy/vision_area.gd" type="Script" id=1]
+[ext_resource path="res://scripts/enemy/enemy_template.gd" type="Script" id=2]
+[ext_resource path="res://scripts/enemy/enemy_texture.gd" type="Script" id=3]
+[ext_resource path="res://scripts/enemy/enemy_hitbox.gd" type="Script" id=4]
+[ext_resource path="res://scripts/enemy/enemy_attack_area.gd" type="Script" id=5]
+
+[node name="EnemyTemplate" type="KinematicBody2D"]
+collision_layer = 8
+script = ExtResource( 2 )
+speed = 80
+gravity = 350
+
+[node name="Texture" type="Sprite" parent="."]
+script = ExtResource( 3 )
+animation_player = NodePath("../AnimationPlayer")
+enemy = NodePath("..")
+attack_area = NodePath("../EnemyAttackArea/Collision")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+
+[node name="VisionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource( 1 )
+enemy = NodePath("..")
+
+[node name="Collision" type="CollisionShape2D" parent="VisionArea"]
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 4 )
+enemy = NodePath("..")
+
+[node name="Collision" type="CollisionShape2D" parent="HitBox"]
+
+[node name="Timer" type="Timer" parent="HitBox"]
+
+[node name="EnemyAttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource( 5 )
+
+[node name="Collision" type="CollisionShape2D" parent="EnemyAttackArea"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="FloorRay" type="RayCast2D" parent="."]
+
+[connection signal="body_entered" from="VisionArea" to="VisionArea" method="_on_VisionArea_body_entered"]
+[connection signal="body_exited" from="VisionArea" to="VisionArea" method="_on_VisionArea_body_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="Texture" method="_on_AnimationPlayer_animation_finished"]
