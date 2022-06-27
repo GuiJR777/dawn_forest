@@ -5,11 +5,18 @@ class_name EnemyHitbox
 const MIN_HEALTH_VALUE: int = 0
 
 onready var timer: Timer = get_node("Timer")
+onready var debug_hp: Label = get_node("DebugHp")
 export(NodePath) onready var enemy = get_node(enemy) as EnemyTemplate
 
 
 export(int) var health_points
 export(float) var invencible_time
+
+
+
+func _process(_delta):
+	debug_hp.text = str(health_points)
+
 
 func take_damage(value: int) -> void:
 	health_points -= value

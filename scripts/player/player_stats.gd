@@ -2,6 +2,7 @@ extends Node
 
 class_name PlayerStats
 
+export(NodePath) onready var debug_hp = get_node(debug_hp) as Label
 export(NodePath) onready var player = get_node(player) as KinematicBody2D
 export(NodePath) onready var collision_area = get_node(collision_area) as Area2D
 export(NodePath) onready var invencibility_timer = get_node("invencibility_timer")
@@ -99,6 +100,8 @@ func recovery_mana(value: int) -> void:
 
 #testes
 func _process(delta):
+	debug_hp.text = str(current_health)
+	
 	if Input.is_action_just_pressed("ui_cancel"):
 		print("Vida atual: " + str(current_health))
 		take_damage(5)

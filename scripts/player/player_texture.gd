@@ -97,7 +97,8 @@ func _on_animation_finished(animation_name: String) -> void:
 		"landing":
 			player.is_landing = false
 			player.set_physics_process(true)
-			
+		"pick_item":
+			player.set_physics_process(true)
 		"attack_left":
 			player.is_attacking = false
 			normal_attack = false

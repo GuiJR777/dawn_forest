@@ -3,10 +3,11 @@ extends KinematicBody2D
 class_name EnemyTemplate
 
 const MIN_DISTANCE_TO_TARGET: int = 5
-
+const SPAWNABLE_ITEM_SCENE_PATH: String = "res://scenes/enviroments/item.tscn"
 
 onready var texture: Sprite = get_node("Texture")
 onready var floor_ray: RayCast2D = get_node("FloorRay")
+onready var drop_dice: DropItensDice = get_node("DropItensDice")
 onready var animation_player: AnimationPlayer = get_node("AnimationPlayer")
 
 export(int) var speed
@@ -26,6 +27,7 @@ var can_attack: bool = false
 var velocity: Vector2
 var face_direction: int = -1
 var player_reference: Player = null
+var drops_map: Dictionary
 
 
 func _physics_process(delta):
@@ -118,4 +120,14 @@ func __turn_to_left() -> void:
 	
 func kill_enemy():
 	animation_player.play("kill")
+	var sorted_item: Array = drop_dice.spawn_item_probability(drops_map)
+	if sorted_item:
+		spawn_item(sorted_item[0], sorted_item[1], sorted_item[2])
+
+func spawn_item(item: String, item_texture: StreamTexture, item_infos: Array) -> void:
+	var item_scene = load(SPAWNABLE_ITEM_SCENE_PATH)
+	var physic_item: PhysicItem = item_scene.instance()
+	get_tree().root.call_deferred("add_child", physic_item)
+	physic_item.global_position = global_position
+	physic_item.set_item_infos(item, item_texture, item_infos)
 
