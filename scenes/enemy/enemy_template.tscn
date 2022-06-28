@@ -59,4 +59,5 @@ script = ExtResource( 6 )
 
 [connection signal="body_entered" from="VisionArea" to="VisionArea" method="_on_VisionArea_body_entered"]
 [connection signal="body_exited" from="VisionArea" to="VisionArea" method="_on_VisionArea_body_exited"]
+[connection signal="timeout" from="HitBox/Timer" to="HitBox" method="_on_Timer_timeout"]
 [connection signal="animation_finished" from="AnimationPlayer" to="Texture" method="_on_AnimationPlayer_animation_finished"]

@@ -20,8 +20,9 @@ func _ready() -> void:
 func _process(delta):
 	if player_reference and Input.is_action_just_pressed("interact"):
 		# guardar no inventário
-		player_reference.sprite.animation_player.play("pick_item")
-		player_reference.set_physics_process(false)
+		if player_reference.is_on_floor():
+			player_reference.sprite.animation_player.play("pick_item")
+			player_reference.set_physics_process(false)
 		queue_free()
 
 func apply_random_impulse() -> void:

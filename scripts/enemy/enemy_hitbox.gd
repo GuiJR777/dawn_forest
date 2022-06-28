@@ -37,5 +37,11 @@ func _on_HitBox_area_entered(area):
 		
 		if not enemy.player_reference:
 			enemy.player_reference = parent
-	elif area.name == "FireSpell":
+	elif area is FireSpell:
 		take_damage(area.damage)
+		set_deferred("monitoring", false)
+		timer.start(invencible_time)
+
+
+func _on_Timer_timeout():
+	set_deferred("monitoring", true)

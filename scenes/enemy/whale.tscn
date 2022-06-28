@@ -456,6 +456,7 @@ shape = SubResource( 5 )
 
 [node name="HitBox" parent="." index="3"]
 health_points = 10
+invencible_time = 1.0
 
 [node name="Collision" parent="HitBox" index="0"]
 position = Vector2( 0, 3 )
