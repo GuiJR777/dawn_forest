@@ -11,6 +11,7 @@ onready var drop_dice: DropItensDice = get_node("DropItensDice")
 onready var animation_player: AnimationPlayer = get_node("AnimationPlayer")
 
 export(int) var speed
+export(int) var xp_reward
 export(int) var gravity
 export(bool) var can_patrol
 export(int) var proximity_threshold
@@ -119,9 +120,10 @@ func __turn_to_left() -> void:
 	face_direction = -1
 	
 func kill_enemy():
+	get_tree().call_group("player_stats", "update_experience", xp_reward)
 	animation_player.play("kill")
-	var sorted_item: Array = drop_dice.spawn_item_probability(drops_map)
-	if sorted_item:
+	var sorted_itens: Array = drop_dice.spawn_item_probability(drops_map)
+	for  sorted_item in sorted_itens:
 		spawn_item(sorted_item[0], sorted_item[1], sorted_item[2])
 
 func spawn_item(item: String, item_texture: StreamTexture, item_infos: Array) -> void:

@@ -2,7 +2,6 @@ extends Node
 
 class_name PlayerStats
 
-export(NodePath) onready var debug_hp = get_node(debug_hp) as Label
 export(NodePath) onready var player = get_node(player) as KinematicBody2D
 export(NodePath) onready var collision_area = get_node(collision_area) as Area2D
 export(NodePath) onready var invencibility_timer = get_node("invencibility_timer")
@@ -51,13 +50,18 @@ func _ready():
 
 	max_health = current_health
 	max_mana = current_mana
+	
+	get_tree().call_group("bar_container", "init_stats_bar", max_health, max_mana, experience_for_level_map[level])
 
 func __turn_hp_and_mp_max() -> void:
 	current_health = base_health_points + bonus_health_points
 	current_mana = base_mana_points + bonus_mana_points
+	get_tree().call_group("bar_container", "update_bar", "HP", current_health)
+	get_tree().call_group("bar_container", "update_bar", "MP", current_mana)
 
 func update_experience(value: int) -> void:
 	current_experience += value
+	get_tree().call_group("bar_container", "update_bar", "XP", current_experience)
 	if current_experience >= experience_for_level_map[level] and level < MAX_LEVEL:
 		__level_up()
 	elif current_experience >= experience_for_level_map[level] and level == MAX_LEVEL:
@@ -66,6 +70,11 @@ func update_experience(value: int) -> void:
 func __level_up() -> void:
 	level += 1
 	__turn_hp_and_mp_max()
+	yield(get_tree().create_timer(0.2), "timeout")
+	get_tree().call_group("bar_container", "update_debug_level_label", level)
+	get_tree().call_group(
+		"bar_container", "set_new_values", "XP", experience_for_level_map[level], current_experience, experience_for_level_map[level-1]
+		)
 	
 func take_damage(value: int) -> void:
 	var damage: int = __apply_defense(value)
@@ -76,6 +85,7 @@ func take_damage(value: int) -> void:
 	if current_health <= MIN_HEALTH_VALUE:
 		current_health = MIN_HEALTH_VALUE
 		player.is_dead = true
+	__update_bar("HP", current_health)
 	
 func __apply_defense(value: int) -> int:
 	if is_blocking_the_attack:
@@ -89,19 +99,24 @@ func healing(value: int) -> void:
 	current_health += value
 	if current_health > max_health:
 		current_health = max_health
+	__update_bar("HP", current_health)
+
 	
 func consume_mana(value: int) -> void:
 	current_mana -= value
+	__update_bar("MP", current_mana)
 	
 func recovery_mana(value: int) -> void:
 	current_mana += value
 	if current_mana > max_mana:
 		current_mana = max_mana
+	__update_bar("MP", current_mana)
+
+func __update_bar(bar_name: String, value: int) -> void:
+	get_tree().call_group("bar_container", "update_bar", bar_name, value)
 
 #testes
 func _process(delta):
-	debug_hp.text = str(current_health)
-	
 	if Input.is_action_just_pressed("ui_cancel"):
 		print("Vida atual: " + str(current_health))
 		take_damage(5)

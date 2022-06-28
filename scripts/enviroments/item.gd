@@ -2,9 +2,9 @@ extends RigidBody2D
 
 class_name PhysicItem
 
+const COLLECT_SFX: PackedScene = preload("res://scenes/SFX/general/collect_item.tscn")
 
 onready var 	texture: Sprite = get_node("Texture")
-onready var label: Label = get_node("ItemName")
 
 var player_reference: Player = null
 
@@ -27,7 +27,7 @@ func _process(delta):
 func apply_random_impulse() -> void:
 	apply_impulse(
 		Vector2.ZERO, # offset do impulso
-		Vector2(rand_range(-30, 30), -90) # local do impulso
+		Vector2(rand_range(-60, 60), -120) # local do impulso
 	)
 
 func set_item_infos(item_name: String, item_texture: StreamTexture, item_infos: Array) -> void:
@@ -37,10 +37,16 @@ func set_item_infos(item_name: String, item_texture: StreamTexture, item_infos: 
 	item_texture = item_texture
 	item_infos = item_infos
 	
-	label.text = item_name
 	texture.texture = item_texture
+	
+func spawn_sfx() -> void:
+	var sfx_instance: SFXTemplate = COLLECT_SFX.instance()
+	get_tree().root.call_deferred("add_child", sfx_instance)
+	sfx_instance.global_position = global_position
+	sfx_instance.play_sfx()
 
 func _on_VisibilityNotifier2D_screen_exited():
+	spawn_sfx()
 	queue_free()
 
 

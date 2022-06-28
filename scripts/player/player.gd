@@ -3,6 +3,7 @@ extends KinematicBody2D
 class_name Player
 
 const MAX_JUMPS: int = 2
+const JUMP_SFX_PATH: String = "res://scenes/SFX/dust/Jump_SFX.tscn"
 
 onready var sprite: Sprite = get_node("Texture")
 onready var wall_ray: RayCast2D = get_node("WallRay")
@@ -14,6 +15,7 @@ export(int) var wall_jump_speed
 export(int) var gravity
 export(int) var wall_friction
 export(int) var wall_normal_speed
+export(int) var magic_attack_cost
 
 var velocity: Vector2
 var normal_direction: int = 1
@@ -62,6 +64,8 @@ func __vertical_movement() -> void:
 	
 	var can_jump: bool = jump_count < MAX_JUMPS and can_track_input and not is_attacking
 	if Input.is_action_just_pressed("jump") and can_jump:
+		if jump_count == 0 and is_on_floor():
+			spawn_sfx(JUMP_SFX_PATH, Vector2(0, 18), true)
 		jump_count += 1
 		if is_next_to_wall() and not is_on_floor():
 			velocity.y = jump_speed
@@ -89,6 +93,10 @@ func __attack() -> void:
 	if Input.is_action_just_pressed("attack") and __can_attack():
 		is_attacking = true
 		sprite.normal_attack = true
+	elif Input.is_action_just_pressed("magic_attack") and __can_attack() and stats.current_mana >= magic_attack_cost:
+		is_attacking = true
+		sprite.magic_attack = true
+		stats.consume_mana(magic_attack_cost)
 
 
 func __crouch() -> void:
@@ -123,3 +131,12 @@ func __apply_gravity(delta: float) -> void:
 	velocity.y += delta * gravity_to_apply
 	if velocity.y >= gravity_to_apply:
 		velocity.y = gravity_to_apply
+		
+func spawn_sfx(sfx_path: String, offset: Vector2, flip_sfx: bool) -> void:
+	var sfx_instance: SFXTemplate = load(sfx_path).instance()
+	get_tree().root.call_deferred("add_child", sfx_instance)
+	sfx_instance.global_position = global_position + offset
+	if flip_sfx:
+		sfx_instance.flip_h = sprite.flip_h
+	sfx_instance.play_sfx()
+	

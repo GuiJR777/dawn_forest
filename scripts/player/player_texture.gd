@@ -17,6 +17,7 @@ export(NodePath) onready var player = get_node(player) as KinematicBody2D
 
 var face_direction_is_left: bool = false
 var normal_attack: bool = false
+var magic_attack: bool = false
 var shield_off: bool = false
 var crouch_off: bool = false
 
@@ -68,6 +69,8 @@ func __action_behavior():
 		animation_player.play("wall_slide")
 	elif player.is_attacking and normal_attack:
 		animation_player.play("attack" + direction_name)
+	elif player.is_attacking and magic_attack:
+		animation_player.play("magic_attack")
 	elif player.is_defending and shield_off:
 		animation_player.play("defend")
 		shield_off = false
@@ -106,6 +109,9 @@ func _on_animation_finished(animation_name: String) -> void:
 		"attack_right":
 			player.is_attacking = false
 			normal_attack = false
+		"magic_attack":
+			player.is_attacking = false
+			magic_attack = false
 		"take_damage":
 			player.set_physics_process(true)
 			player.is_take_damage = false

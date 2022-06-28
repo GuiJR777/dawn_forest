@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/player/char_green.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player/player.gd" type="Script" id=2]
@@ -424,6 +424,36 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 37, 38, 39 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ "res://scenes/SFX/dust/dust_sfx.tscn", Vector2( 0, 18 ), false ],
+"method": "spawn_sfx"
+} ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "magic_attack"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 64, 65, 66, 67, 68, 69, 70 ]
+}
 
 [sub_resource type="Animation" id=20]
 resource_name = "pick_item"
@@ -456,6 +486,23 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 16, 17, 18, 19, 20, 21, 22, 23 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ "res://scenes/SFX/dust/running_sfx.tscn", Vector2( 5, 18 ), true ],
+"method": "spawn_sfx"
+}, {
+"args": [ "res://scenes/SFX/dust/running_sfx.tscn", Vector2( 5, 18 ), true ],
+"method": "spawn_sfx"
+} ]
 }
 
 [sub_resource type="Animation" id=18]
@@ -705,8 +752,10 @@ wall_jump_speed = -150
 gravity = 350
 wall_friction = 235
 wall_normal_speed = 500
+magic_attack_cost = 5
 
 [node name="Collision" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -1, 12.5 )
 shape = SubResource( 8 )
 
@@ -730,6 +779,7 @@ anims/fall = SubResource( 6 )
 anims/idle = SubResource( 2 )
 anims/jump = SubResource( 5 )
 anims/landing = SubResource( 7 )
+anims/magic_attack = SubResource( 21 )
 anims/pick_item = SubResource( 20 )
 anims/run = SubResource( 4 )
 anims/take_damage = SubResource( 18 )
@@ -742,6 +792,7 @@ drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 
 [node name="AttackArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 8
 
@@ -751,6 +802,7 @@ shape = SubResource( 10 )
 disabled = true
 
 [node name="WallRay" type="RayCast2D" parent="."]
+visible = false
 enabled = true
 cast_to = Vector2( 5.2, 0 )
 collision_mask = 3
@@ -774,9 +826,8 @@ modulate = Color( 1, 1, 1, 0 )
 scale = Vector2( 0.29, 0.29 )
 texture = ExtResource( 4 )
 
-[node name="Stats" type="Node" parent="."]
+[node name="Stats" type="Node" parent="." groups=["player_stats"]]
 script = ExtResource( 5 )
-debug_hp = NodePath("../DebugHP")
 player = NodePath("..")
 collision_area = NodePath("../HitBox")
 invencibility_timer = NodePath("invencibility_timer")
@@ -785,22 +836,13 @@ invencibility_timer = NodePath("invencibility_timer")
 one_shot = true
 
 [node name="HitBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 0
 
 [node name="Collision" type="CollisionShape2D" parent="HitBox"]
 position = Vector2( -1, 12.5 )
 shape = SubResource( 8 )
-
-[node name="DebugHP" type="Label" parent="."]
-anchor_top = -0.069
-anchor_bottom = -0.069
-margin_left = -21.0
-margin_top = -19.0
-margin_right = 19.0
-margin_bottom = -5.0
-text = "165"
-align = 1
 
 [connection signal="animation_finished" from="AnimationPlayer" to="Texture" method="_on_animation_finished"]
 [connection signal="animation_finished" from="Light/Animation" to="Light" method="_on_Animation_animation_finished"]

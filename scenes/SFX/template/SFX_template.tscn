@@ -4,3 +4,5 @@
 
 [node name="SFX_template" type="AnimatedSprite"]
 script = ExtResource( 1 )
+
+[connection signal="animation_finished" from="." to="." method="_on_SFX_template_animation_finished"]

@@ -31,6 +31,7 @@ func spawn_item_probability(drops_map: Dictionary) -> Array:
 	else:
 		drop_bonus = 3
 	
+	var itens_to_drop: Array = []
 	for item in drops_map.keys():
 		var sorted_percent: int = randi() % HUNDREAD_PERCENT + 1
 		var amount_of_items_to_drop: int = 1
@@ -44,5 +45,6 @@ func spawn_item_probability(drops_map: Dictionary) -> Array:
 				drops_map[item][SALE_VALUE],
 				amount_of_items_to_drop,
 			]
-			return [item, item_texture, item_infos]
-	return []
+			itens_to_drop.append([item, item_texture, item_infos])
+	
+	return itens_to_drop
