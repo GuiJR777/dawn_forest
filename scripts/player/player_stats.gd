@@ -14,7 +14,7 @@ var is_blocking_the_attack: bool = false
 var base_health_points: int = 15
 var base_mana_points: int = 10
 var base_attack_points: int = 1
-var base_magic_attack_points: int = 3
+var base_magic_attack_points: int = 5
 var base_defense_points: int = 1
 
 var bonus_health_points: int = 0

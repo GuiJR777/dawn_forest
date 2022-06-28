@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/SFX/fireball/fire_ball3.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/SFX/fireball/fire_ball1.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/SFX/fireball/fire_ball2.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/effect/light.png" type="Texture" id=4]
 [ext_resource path="res://scripts/player/fire_spell.gd" type="Script" id=5]
+[ext_resource path="res://scenes/SFX/general/explosion_particless.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 70, 25 )
@@ -59,6 +60,30 @@ tracks/3/keys = {
 "update": 0,
 "values": [ true ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("ExplosionParticless:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("ExplosionParticless:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "light_strenght"
@@ -85,7 +110,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.5, 3.5, 4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ 0.0, 1.2, 1.2, 0.0 ]
+"values": [ 0.0, 2.0, 2.0, 0.0 ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Collision:position")
@@ -107,6 +132,30 @@ tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
 "times": PoolRealArray( 0, 3.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("ExplosionParticless:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 60 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("ExplosionParticless:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
@@ -143,5 +192,7 @@ energy = 0.0
 autoplay = "light_strenght"
 anims/RESET = SubResource( 1 )
 anims/light_strenght = SubResource( 2 )
+
+[node name="ExplosionParticless" parent="." instance=ExtResource( 6 )]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

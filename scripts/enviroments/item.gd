@@ -27,7 +27,7 @@ func _process(delta):
 func apply_random_impulse() -> void:
 	apply_impulse(
 		Vector2.ZERO, # offset do impulso
-		Vector2(rand_range(-60, 60), -120) # local do impulso
+		Vector2(rand_range(-30, 30), -120) # local do impulso
 	)
 
 func set_item_infos(item_name: String, item_texture: StreamTexture, item_infos: Array) -> void:

@@ -8,7 +8,7 @@ var damage: int
 
 func _ready() -> void:
 	for child in get_children():
-		if child is Particles2D:
+		if child is Particles2D and child.name != "ExplosionParticless":
 			child.emitting = true
 
 
