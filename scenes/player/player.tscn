@@ -454,6 +454,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 64, 65, 66, 67, 68, 69, 70 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_spell"
+} ]
+}
 
 [sub_resource type="Animation" id=20]
 resource_name = "pick_item"
@@ -787,7 +801,7 @@ anims/wall_slide = SubResource( 14 )
 
 [node name="LevelCamera" type="Camera2D" parent="."]
 current = true
-limit_top = 0
+limit_top = -50
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 

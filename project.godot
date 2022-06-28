@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/enemy/enemy_texture.gd"
 }, {
+"base": "Area2D",
+"class": "FireSpell",
+"language": "GDScript",
+"path": "res://scripts/player/fire_spell.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
@@ -107,6 +112,7 @@ _global_script_class_icons={
 "EnemyHitbox": "",
 "EnemyTemplate": "",
 "EnemyTexture": "",
+"FireSpell": "",
 "GitAPI": "",
 "Level": "",
 "PhysicItem": "",

@@ -4,6 +4,7 @@ class_name Player
 
 const MAX_JUMPS: int = 2
 const JUMP_SFX_PATH: String = "res://scenes/SFX/dust/Jump_SFX.tscn"
+const FIRE_SPELL: PackedScene = preload("res://scenes/player/fire_spell.tscn")
 
 onready var sprite: Sprite = get_node("Texture")
 onready var wall_ray: RayCast2D = get_node("WallRay")
@@ -18,6 +19,7 @@ export(int) var wall_normal_speed
 export(int) var magic_attack_cost
 
 var velocity: Vector2
+var spell_offset: Vector2 = Vector2(75, -70)
 var normal_direction: int = 1
 var jump_count: int = 0
 var is_landing: bool = false
@@ -139,4 +141,13 @@ func spawn_sfx(sfx_path: String, offset: Vector2, flip_sfx: bool) -> void:
 	if flip_sfx:
 		sfx_instance.flip_h = sprite.flip_h
 	sfx_instance.play_sfx()
+	
+func spawn_spell() -> void:
+	var fire_spell = FIRE_SPELL.instance()
+	fire_spell.damage = stats.base_magic_attack_points + stats.bonus_magic_attack_points
+	var offset = spell_offset
+	if sprite.face_direction_is_left:
+		offset.x = offset.x * -1
+	fire_spell.global_position = global_position + offset
+	get_tree().root.call_deferred("add_child", fire_spell)
 	
