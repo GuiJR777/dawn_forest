@@ -5,9 +5,11 @@ class_name PlayerStats
 export(NodePath) onready var player = get_node(player) as KinematicBody2D
 export(NodePath) onready var collision_area = get_node(collision_area) as Area2D
 export(NodePath) onready var invencibility_timer = get_node("invencibility_timer")
+export(PackedScene) var floating_text
 
 const MAX_LEVEL: int = 10
 const MIN_HEALTH_VALUE: int = 0
+
 
 var is_blocking_the_attack: bool = false
 
@@ -61,6 +63,7 @@ func __turn_hp_and_mp_max() -> void:
 
 func update_experience(value: int) -> void:
 	current_experience += value
+	spawn_floating_text("+", "XP", value)
 	get_tree().call_group("bar_container", "update_bar", "XP", current_experience)
 	if current_experience >= experience_for_level_map[level] and level < MAX_LEVEL:
 		__level_up()
@@ -79,6 +82,7 @@ func __level_up() -> void:
 func take_damage(value: int) -> void:
 	var damage: int = __apply_defense(value)
 	current_health -= damage
+	spawn_floating_text("-", "DAMAGE", damage)
 	if damage > 0 and current_health > MIN_HEALTH_VALUE:
 		player.is_take_damage = true
 		player.is_attacking = false
@@ -97,6 +101,7 @@ func __apply_defense(value: int) -> int:
 	
 func healing(value: int) -> void:
 	current_health += value
+	spawn_floating_text("+", "HP", value)
 	if current_health > max_health:
 		current_health = max_health
 	__update_bar("HP", current_health)
@@ -104,10 +109,12 @@ func healing(value: int) -> void:
 	
 func consume_mana(value: int) -> void:
 	current_mana -= value
+	spawn_floating_text("-", "MP", value)
 	__update_bar("MP", current_mana)
 	
 func recovery_mana(value: int) -> void:
 	current_mana += value
+	spawn_floating_text("+", "MP", value)
 	if current_mana > max_mana:
 		current_mana = max_mana
 	__update_bar("MP", current_mana)
@@ -116,7 +123,7 @@ func __update_bar(bar_name: String, value: int) -> void:
 	get_tree().call_group("bar_container", "update_bar", bar_name, value)
 
 #testes
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		print("Vida atual: " + str(current_health))
 		take_damage(5)
@@ -133,3 +140,12 @@ func _on_CollisionArea_area_entered(area):
 
 func _on_invencibility_timer_timeout():
 	collision_area.set_deferred("monitoring", true)
+	
+func spawn_floating_text(type_sign: String, type: String, value: int) -> void:
+	var text: FloatingText = floating_text.instance()
+	text.rect_global_position = player.global_position
+	text.type = type
+	text.type_sign = type_sign
+	text.value = value
+	
+	get_tree().root.call_deferred("add_child", text)
