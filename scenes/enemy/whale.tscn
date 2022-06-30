@@ -462,7 +462,7 @@ position = Vector2( 0, 3 )
 shape = SubResource( 8 )
 
 [node name="EnemyAttackArea" parent="." index="4"]
-attack_damage = 3
+attack_damage = 6
 invencibility_time = 1.0
 
 [node name="Collision" parent="EnemyAttackArea" index="0"]
@@ -484,5 +484,3 @@ anims/take_damage = SubResource( 6 )
 position = Vector2( -33, 0 )
 enabled = true
 cast_to = Vector2( 0, 30 )
-
-[connection signal="area_entered" from="HitBox" to="HitBox" method="_on_HitBox_area_entered"]

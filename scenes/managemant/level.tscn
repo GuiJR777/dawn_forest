@@ -70,8 +70,8 @@ position = Vector2( 836, 42 )
 start_position = NodePath("../start_enemy1")
 end_position = NodePath("../start_enemy1")
 
-[node name="Enemy4" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 1000, 98 )
+[node name="Enemy4" parent="Enemy" instance=ExtResource( 10 )]
+position = Vector2( 1133, 104 )
 can_patrol = true
 start_position = NodePath("../start_enemy4")
 end_position = NodePath("../end_enemy4")
@@ -86,22 +86,33 @@ position = Vector2( 1754, 99 )
 start_position = NodePath("../start_enemy1")
 end_position = NodePath("../start_enemy1")
 
-[node name="Enemy7" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 3554, 89 )
+[node name="Enemy7" parent="Enemy" instance=ExtResource( 10 )]
+position = Vector2( 3399, 89 )
 can_patrol = true
 start_position = NodePath("../start_enemy7")
 end_position = NodePath("../end_enemy7")
 
 [node name="Enemy8" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 4520, 113 )
+position = Vector2( 3635, 121 )
 start_position = NodePath("../start_enemy1")
 end_position = NodePath("../start_enemy1")
 
-[node name="Enemy9" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 5666, 113 )
+[node name="Enemy9" parent="Enemy" instance=ExtResource( 10 )]
+position = Vector2( 5360, 104 )
 can_patrol = true
 start_position = NodePath("../start_enemy9")
 end_position = NodePath("../end_enemy9")
+
+[node name="Enemy10" parent="Enemy" instance=ExtResource( 8 )]
+position = Vector2( 4463, 119 )
+start_position = NodePath("../start_enemy1")
+end_position = NodePath("../start_enemy1")
+
+[node name="Enemy11" parent="Enemy" instance=ExtResource( 10 )]
+position = Vector2( 4783, 114 )
+can_patrol = true
+start_position = NodePath("../end_enemy7")
+end_position = NodePath("../start_enemy9")
 
 [node name="start_enemy1" type="Position2D" parent="Enemy"]
 position = Vector2( 386, 149 )
