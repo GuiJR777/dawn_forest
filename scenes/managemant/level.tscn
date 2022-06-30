@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://resources/small_map_decoration_tile.tres" type="TileSet" id=1]
 [ext_resource path="res://resources/normal_map_decoration_tile.tres" type="TileSet" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scripts/management/level.gd" type="Script" id=7]
 [ext_resource path="res://scenes/enemy/whale.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI/general/hud.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/enemy/crabby.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -53,8 +54,8 @@ environment = SubResource( 1 )
 
 [node name="Enemy" type="Node2D" parent="."]
 
-[node name="Enemy1" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 333, 143 )
+[node name="Enemy1" parent="Enemy" instance=ExtResource( 10 )]
+position = Vector2( 284, 144 )
 can_patrol = true
 start_position = NodePath("../start_enemy1")
 end_position = NodePath("../end_enemy1")

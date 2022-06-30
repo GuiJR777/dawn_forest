@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/UI/player/bar_container.gd"
 }, {
+"base": "EnemyTemplate",
+"class": "Crabby",
+"language": "GDScript",
+"path": "res://scripts/enemy/crabby/crabby.gd"
+}, {
+"base": "EnemyTexture",
+"class": "CrabbyTexture",
+"language": "GDScript",
+"path": "res://scripts/enemy/crabby/crabby_texture.gd"
+}, {
 "base": "Node",
 "class": "DropItensDice",
 "language": "GDScript",
@@ -112,6 +122,8 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Background": "",
 "BarContainer": "",
+"Crabby": "",
+"CrabbyTexture": "",
 "DropItensDice": "",
 "EnemyAttackArea": "",
 "EnemyHitbox": "",
