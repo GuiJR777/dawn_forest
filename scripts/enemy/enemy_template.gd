@@ -16,6 +16,7 @@ export(int) var gravity
 export(bool) var can_patrol
 export(int) var proximity_threshold
 export(int) var raycast_default_position
+export(PackedScene) var floating_text
 
 export(NodePath) onready var start_position = get_node(start_position) as Position2D
 export(NodePath) onready var end_position = get_node(end_position) as Position2D
@@ -132,4 +133,13 @@ func spawn_item(item: String, item_texture: StreamTexture, item_infos: Array) ->
 	get_tree().root.call_deferred("add_child", physic_item)
 	physic_item.global_position = global_position
 	physic_item.set_item_infos(item, item_texture, item_infos)
+	
+func spawn_floating_text(type_sign: String, type: String, value: int) -> void:
+	var text: FloatingText = floating_text.instance()
+	text.rect_global_position = global_position
+	text.type = type
+	text.type_sign = type_sign
+	text.value = value
+	
+	get_tree().root.call_deferred("add_child", text)
 

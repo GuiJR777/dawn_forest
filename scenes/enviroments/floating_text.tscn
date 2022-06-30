@@ -21,5 +21,6 @@ xp_color = Color( 0.886275, 0.854902, 0.0627451, 1 )
 hp_color = Color( 0.0392157, 0.960784, 0.0745098, 1 )
 mp_color = Color( 0.0745098, 0.368627, 0.87451, 1 )
 damage_color = Color( 0.886275, 0.0470588, 0.0470588, 1 )
+level_color = Color( 0.0156863, 1, 0.839216, 1 )
 
 [node name="Tween" type="Tween" parent="."]

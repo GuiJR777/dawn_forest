@@ -78,6 +78,8 @@ func __level_up() -> void:
 	get_tree().call_group(
 		"bar_container", "set_new_values", "XP", experience_for_level_map[level], current_experience, experience_for_level_map[level-1]
 		)
+	yield(get_tree().create_timer(1), "timeout")
+	spawn_floating_text("", "LEVEL", 0)
 	
 func take_damage(value: int) -> void:
 	var damage: int = __apply_defense(value)

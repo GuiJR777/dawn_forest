@@ -18,6 +18,7 @@ export(Color) var xp_color
 export(Color) var hp_color
 export(Color) var mp_color
 export(Color) var damage_color
+export(Color) var level_color
 
 func _ready():
 	randomize()
@@ -31,6 +32,7 @@ func floating_text() -> void:
 	text = type_sign + str(value)
 	match type:
 		"XP":
+			text += " XP"
 			modulate = xp_color
 		"HP":
 			modulate = hp_color
@@ -38,6 +40,10 @@ func floating_text() -> void:
 			modulate = mp_color
 		"DAMAGE":
 			modulate = damage_color
+		"LEVEL":
+			text = "LEVEL UP"
+			modulate = level_color
+	
 	interpolate()
 
 func interpolate() -> void:
