@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://resources/small_map_decoration_tile.tres" type="TileSet" id=1]
 [ext_resource path="res://resources/normal_map_decoration_tile.tres" type="TileSet" id=2]
@@ -7,9 +7,8 @@
 [ext_resource path="res://scenes/enviroments/mask.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/management/level.gd" type="Script" id=7]
-[ext_resource path="res://scenes/enemy/whale.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/enviroments/enemy_spawner.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/UI/general/hud.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/enemy/crabby.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -49,101 +48,42 @@ tile_data = PoolIntArray( 196625, 0, 0, 196651, 1, 0, 196664, 1, 0, 458827, 1, 0
 [node name="Player" parent="." instance=ExtResource( 6 )]
 position = Vector2( 18, 117 )
 
-[node name="Environment" type="WorldEnvironment" parent="."]
-environment = SubResource( 1 )
-
 [node name="Enemy" type="Node2D" parent="."]
 
-[node name="Enemy1" parent="Enemy" instance=ExtResource( 10 )]
-position = Vector2( 284, 144 )
-can_patrol = true
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../end_enemy1")
+[node name="EnemySpawner" parent="Enemy" instance=ExtResource( 8 )]
+position = Vector2( 306, 60 )
+enemies = [ {
+"floor_offset": 11.5,
+"max_spawn_probability": 55,
+"min_spawn_probability": 1,
+"scene_path": "res://scenes/enemy/whale.tscn"
+}, {
+"floor_offset": 11.5,
+"max_spawn_probability": 100,
+"min_spawn_probability": 56,
+"scene_path": "res://scenes/enemy/pink_star.tscn"
+} ]
+spawn_cooldown = 5.0
+max_enemy_amount = 1
+max_spawn_position_to_leaft = 35
+max_spawn_position_to_right = 35
+can_respawn = true
 
-[node name="Enemy2" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 550, 110 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
+[node name="EnemySpawner2" parent="Enemy" instance=ExtResource( 8 )]
+position = Vector2( 306, 158 )
+enemies = [ {
+"floor_offset": 11.5,
+"max_spawn_probability": 100,
+"min_spawn_probability": 1,
+"scene_path": "res://scenes/enemy/whale.tscn"
+} ]
+spawn_cooldown = 15.0
+max_enemy_amount = 2
+max_spawn_position_to_leaft = 95
+max_spawn_position_to_right = 95
+can_respawn = true
 
-[node name="Enemy3" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 836, 42 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
-
-[node name="Enemy4" parent="Enemy" instance=ExtResource( 10 )]
-position = Vector2( 1133, 104 )
-can_patrol = true
-start_position = NodePath("../start_enemy4")
-end_position = NodePath("../end_enemy4")
-
-[node name="Enemy5" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 1378, -18 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
-
-[node name="Enemy6" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 1754, 99 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
-
-[node name="Enemy7" parent="Enemy" instance=ExtResource( 10 )]
-position = Vector2( 3399, 89 )
-can_patrol = true
-start_position = NodePath("../start_enemy7")
-end_position = NodePath("../end_enemy7")
-
-[node name="Enemy8" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 3635, 121 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
-
-[node name="Enemy9" parent="Enemy" instance=ExtResource( 10 )]
-position = Vector2( 5360, 104 )
-can_patrol = true
-start_position = NodePath("../start_enemy9")
-end_position = NodePath("../end_enemy9")
-
-[node name="Enemy10" parent="Enemy" instance=ExtResource( 8 )]
-position = Vector2( 4463, 119 )
-start_position = NodePath("../start_enemy1")
-end_position = NodePath("../start_enemy1")
-
-[node name="Enemy11" parent="Enemy" instance=ExtResource( 10 )]
-position = Vector2( 4783, 114 )
-can_patrol = true
-start_position = NodePath("../end_enemy7")
-end_position = NodePath("../start_enemy9")
-
-[node name="start_enemy1" type="Position2D" parent="Enemy"]
-position = Vector2( 386, 149 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="end_enemy1" type="Position2D" parent="Enemy"]
-position = Vector2( 218, 148 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="start_enemy4" type="Position2D" parent="Enemy"]
-position = Vector2( 1001, 104 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="end_enemy4" type="Position2D" parent="Enemy"]
-position = Vector2( 1379, 103 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="start_enemy7" type="Position2D" parent="Enemy"]
-position = Vector2( 3958, 128 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="end_enemy7" type="Position2D" parent="Enemy"]
-position = Vector2( 3000, 123 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="start_enemy9" type="Position2D" parent="Enemy"]
-position = Vector2( 4968, 124 )
-scale = Vector2( 0.75, 0.75 )
-
-[node name="end_enemy9" type="Position2D" parent="Enemy"]
-position = Vector2( 5932, 133 )
-scale = Vector2( 0.75, 0.75 )
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
 
 [node name="Hud" parent="." instance=ExtResource( 9 )]

@@ -5,6 +5,8 @@ class_name EnemyTemplate
 const MIN_DISTANCE_TO_TARGET: int = 5
 const SPAWNABLE_ITEM_SCENE_PATH: String = "res://scenes/enviroments/item.tscn"
 
+signal kill
+
 onready var texture: Sprite = get_node("Texture")
 onready var floor_ray: RayCast2D = get_node("FloorRay")
 onready var drop_dice: DropItensDice = get_node("DropItensDice")
@@ -18,9 +20,9 @@ export(int) var proximity_threshold
 export(int) var raycast_default_position
 export(PackedScene) var floating_text
 
-export(NodePath) onready var start_position = get_node(start_position) as Position2D
-export(NodePath) onready var end_position = get_node(end_position) as Position2D
-onready var target: Position2D = end_position
+var start_position: Vector2
+var end_position: Vector2
+var target: Vector2
 
 var is_dead: bool = false
 var is_taking_damage: bool = false
@@ -31,6 +33,17 @@ var face_direction: int = -1
 var player_reference: Player = null
 var drops_map: Dictionary
 
+
+func _ready():
+	randomize()
+	var spawner: EnemySpawner = get_parent()
+	
+	if spawner:
+		start_position = Vector2(spawner.global_position.x + spawner.max_spawn_position_to_right, global_position.y)
+		end_position = Vector2(spawner.global_position.x - spawner.max_spawn_position_to_leaft, global_position.y)
+		target = end_position
+		can_patrol = bool(rand_range(0, 1))
+		
 
 func _physics_process(delta):
 	__apply_gravity(delta)
@@ -70,10 +83,10 @@ func __change_target() -> void:
 		target = start_position
 
 func __is_walking_to_target() -> bool:
-	var distance: Vector2 = target.global_position - global_position
+	var distance: Vector2 = target - global_position
 	var direction: Vector2 = distance.normalized()
 	
-	face_direction = sign(target.global_position.x - global_position.x)
+	face_direction = sign(target.x - global_position.x)
 	
 	if face_direction > 0:
 		__turn_to_right()
@@ -123,6 +136,7 @@ func __turn_to_left() -> void:
 func kill_enemy():
 	get_tree().call_group("player_stats", "update_experience", xp_reward)
 	animation_player.play("kill")
+	emit_signal("kill")
 	var sorted_itens: Array = drop_dice.spawn_item_probability(drops_map)
 	for  sorted_item in sorted_itens:
 		spawn_item(sorted_item[0], sorted_item[1], sorted_item[2])

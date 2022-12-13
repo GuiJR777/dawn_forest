@@ -6,15 +6,19 @@ const MIN_HEALTH_VALUE: int = 0
 
 onready var timer: Timer = get_node("Timer")
 export(NodePath) onready var enemy = get_node(enemy) as EnemyTemplate
+export(NodePath) onready var enemy_bar = get_node(enemy_bar) as EnemyHealthBar
 
 
 export(int) var health_points
 export(float) var invencible_time
 
 
+func _ready() -> void:
+	enemy_bar.init_bar(health_points)
 
 func take_damage(value: int) -> void:
 	health_points -= value
+	enemy_bar.update_bar(health_points)
 	enemy.spawn_floating_text("-", "DAMAGE", value)
 	
 	if health_points <= MIN_HEALTH_VALUE:
